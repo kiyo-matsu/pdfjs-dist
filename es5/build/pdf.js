@@ -19640,8 +19640,11 @@ var renderTextLayer = function renderTextLayerClosure() {
 
     var angle = Math.atan2(tx[1], tx[0]);
     var style = styles[geom.fontName];
+    var isVertical =
+      (style.vertical && geom.dir !== "ltr") ||
+      (!style.vertical && geom.dir === "ttb");
 
-    if (style.vertical) {
+    if (isVertical) {
       angle += Math.PI / 2;
     }
 
@@ -19679,7 +19682,7 @@ var renderTextLayer = function renderTextLayerClosure() {
     }
 
     if (geom.str.length > 1) {
-      if (style.vertical) {
+      if (isVertical) {
         textDivProperties.canvasWidth = geom.height * task._viewport.scale;
       } else {
         textDivProperties.canvasWidth = geom.width * task._viewport.scale;
@@ -19701,7 +19704,7 @@ var renderTextLayer = function renderTextLayerClosure() {
         angleSin = Math.sin(angle);
       }
 
-      var divWidth = (style.vertical ? geom.height : geom.width) * task._viewport.scale;
+      var divWidth = (isVertical ? geom.height : geom.width) * task._viewport.scale;
       var divHeight = fontHeight;
       var m, b;
 
